@@ -2,14 +2,13 @@ from odoo import models, fields, api
 
 class DeliveryDay(models.Model):
     _name = 'delivery.day'
-    _description = 'Teslimat Günleri'
-    _order = 'sequence, name'
+    _description = 'Teslimat Günü'
 
-    name = fields.Char(string='Gün', required=True)
-    region = fields.Selection([
-        ('anadolu', 'Anadolu'),
-        ('avrupa', 'Avrupa')
-    ], string='Bölge', required=True)
-    districts = fields.Text(string='İlçeler', required=True)
-    sequence = fields.Integer(string='Sıra', default=10)
-    active = fields.Boolean(default=True) 
+    name = fields.Char(string='Gün Adı', required=True)
+    code = fields.Char(string='Gün Kodu', required=True)
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', string='Şirket', required=True, default=lambda self: self.env.company)
+
+    _sql_constraints = [
+        ('code_uniq', 'unique(code, company_id)', 'Gün kodu şirket bazında benzersiz olmalıdır!')
+    ] 
