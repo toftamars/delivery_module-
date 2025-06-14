@@ -14,8 +14,8 @@
     'author': 'Şirket Adı',
     'depends': ['base', 'stock', 'sms'],
     'data': [
-        'security/ir.model.access.csv',
         'security/delivery_security.xml',
+        'security/ir.model.access.csv',
         'data/delivery_data.xml',
         'views/delivery_views.xml',
         'views/delivery_planning_views.xml',
