@@ -6,7 +6,7 @@ class ResPartner(models.Model):
     is_driver = fields.Boolean('Sürücü mü?')
     district_id = fields.Many2one('res.city.district', string='İlçe')
     delivery_day_ids = fields.Many2many('delivery.day', string='Teslimat Günleri', 
-                                      related='district_id.delivery_days', readonly=True)
+                                      related='district_id.delivery_day_ids', readonly=True)
     delivery_day = fields.Selection([
         ('monday', 'Pazartesi'),
         ('tuesday', 'Salı'),

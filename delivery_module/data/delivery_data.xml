@@ -68,7 +68,7 @@
         <record id="district_kadikoy" model="res.city.district">
             <field name="name">Kadıköy</field>
             <field name="city_id" ref="city_istanbul"/>
-            <field name="delivery_days" eval="[(6, 0, [
+            <field name="delivery_day_ids" eval="[(6, 0, [
                 ref('delivery_day_monday'),
                 ref('delivery_day_wednesday'),
                 ref('delivery_day_friday')
@@ -78,7 +78,7 @@
         <record id="district_besiktas" model="res.city.district">
             <field name="name">Beşiktaş</field>
             <field name="city_id" ref="city_istanbul"/>
-            <field name="delivery_days" eval="[(6, 0, [
+            <field name="delivery_day_ids" eval="[(6, 0, [
                 ref('delivery_day_tuesday'),
                 ref('delivery_day_thursday'),
                 ref('delivery_day_saturday')
@@ -88,7 +88,7 @@
         <record id="district_cankaya" model="res.city.district">
             <field name="name">Çankaya</field>
             <field name="city_id" ref="city_ankara"/>
-            <field name="delivery_days" eval="[(6, 0, [
+            <field name="delivery_day_ids" eval="[(6, 0, [
                 ref('delivery_day_monday'),
                 ref('delivery_day_wednesday'),
                 ref('delivery_day_friday')
