@@ -22,7 +22,6 @@
     ],
     'data': [
         'security/delivery_security.xml',
-        'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/delivery_data.xml',
         'views/delivery_views.xml',
@@ -31,6 +30,7 @@
         'views/res_partner_views.xml',
         'views/menu_views.xml',
         'wizard/delivery_create_wizard_views.xml',
+        'security/ir.model.access.csv',
         'security/ir_rule.xml',
     ],
     'demo': [],
