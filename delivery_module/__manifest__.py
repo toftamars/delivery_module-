@@ -11,7 +11,7 @@
         - Rota ve harita desteği
         - İlçe bazlı gün kısıtlamaları
     """,
-    'author': 'Şirket Adı',
+    'author': 'Alper Tofta',
     'depends': [
         'base',
         'stock',
