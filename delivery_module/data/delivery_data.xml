@@ -18,5 +18,33 @@
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
         </record>
+
+        <!-- Örnek Şehirler -->
+        <record id="city_istanbul" model="res.city">
+            <field name="name">İstanbul</field>
+        </record>
+
+        <record id="city_ankara" model="res.city">
+            <field name="name">Ankara</field>
+        </record>
+
+        <!-- Örnek İlçeler -->
+        <record id="district_kadikoy" model="res.city.district">
+            <field name="name">Kadıköy</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="delivery_days">monday,wednesday,friday</field>
+        </record>
+
+        <record id="district_besiktas" model="res.city.district">
+            <field name="name">Beşiktaş</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="delivery_days">tuesday,thursday,saturday</field>
+        </record>
+
+        <record id="district_cankaya" model="res.city.district">
+            <field name="name">Çankaya</field>
+            <field name="city_id" ref="city_ankara"/>
+            <field name="delivery_days">monday,wednesday,friday</field>
+        </record>
     </data>
 </odoo> 
