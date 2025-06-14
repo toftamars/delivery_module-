@@ -3,51 +3,45 @@ from odoo import models, fields, api
 class DeliveryDocument(models.Model):
     _name = 'delivery.document'
     _description = 'Teslimat Belgesi'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-    _order = 'create_date desc'
+    _order = 'date desc, id desc'
 
-    name = fields.Char(string='Belge No', required=True, copy=False, readonly=True, default='Yeni')
-    state = fields.Selection([
-        ('draft', 'Taslak'),
-        ('confirmed', 'Onaylandı'),
-        ('in_progress', 'Teslimatta'),
-        ('done', 'Tamamlandı'),
-        ('cancelled', 'İptal Edildi')
-    ], string='Durum', default='draft', tracking=True)
-    
-    partner_id = fields.Many2one('res.partner', string='Müşteri', required=True, tracking=True)
+    name = fields.Char(string='Belge Numarası', required=True, copy=False, readonly=True, default='Yeni')
+    date = fields.Date(string='Teslimat Tarihi', required=True, default=fields.Date.context_today)
+    partner_id = fields.Many2one('res.partner', string='Müşteri', required=True)
     district_id = fields.Many2one('res.city.district', string='İlçe', related='partner_id.district_id', store=True)
     delivery_day_ids = fields.Many2many('delivery.day', string='Teslimat Günleri', related='partner_id.delivery_day_ids', store=True)
-    
-    picking_id = fields.Many2one('stock.picking', string='Transfer Belgesi', required=True, tracking=True)
-    driver_id = fields.Many2one('res.partner', string='Sürücü', domain="[('is_driver', '=', True)]", tracking=True)
-    
-    planned_date = fields.Date(string='Planlanan Tarih', tracking=True)
-    delivery_date = fields.Date(string='Teslimat Tarihi', tracking=True)
-    
-    notes = fields.Text(string='Notlar')
-    
+    picking_id = fields.Many2one('stock.picking', string='Transfer Belgesi', required=True)
+    picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
+    driver_id = fields.Many2one('res.partner', string='Sürücü', required=True, domain=[('is_driver', '=', True)])
+    planning_id = fields.Many2one('delivery.planning', string='Teslimat Planlaması')
+    state = fields.Selection([
+        ('draft', 'Taslak'),
+        ('approved', 'Onaylandı'),
+        ('in_delivery', 'Teslimatta'),
+        ('completed', 'Tamamlandı'),
+        ('canceled', 'İptal')
+    ], string='Durum', default='draft', required=True)
+    note = fields.Text(string='Notlar')
+    company_id = fields.Many2one('res.company', string='Şirket', required=True, default=lambda self: self.env.company)
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('name', 'Yeni') == 'Yeni':
                 vals['name'] = self.env['ir.sequence'].next_by_code('delivery.document') or 'Yeni'
         return super().create(vals_list)
-    
-    def action_confirm(self):
-        self.write({'state': 'confirmed'})
-    
-    def action_start_delivery(self):
-        self.write({'state': 'in_progress'})
-    
-    def action_done(self):
-        self.write({
-            'state': 'done',
-            'delivery_date': fields.Date.today()
-        })
-    
+
+    def action_approve(self):
+        self.write({'state': 'approved'})
+
+    def action_start(self):
+        self.write({'state': 'in_delivery'})
+
+    def action_complete(self):
+        self.write({'state': 'completed'})
+
     def action_cancel(self):
-        self.write({'state': 'cancelled'})
-    
-    def action_reset_draft(self):
+        self.write({'state': 'canceled'})
+
+    def action_draft(self):
         self.write({'state': 'draft'}) 
