@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Teslimat Oluşturma Sihirbazı Form Görünümü -->
+        <record id="view_delivery_create_wizard_form" model="ir.ui.view">
+            <field name="name">delivery.create.wizard.form</field>
+            <field name="model">delivery.create.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Teslimat Oluştur">
+                    <group>
+                        <field name="picking_ids" widget="many2many_tags"/>
+                        <field name="delivery_date"/>
+                        <field name="vehicle_id"/>
+                        <field name="driver_id"/>
+                        <field name="planning_id"/>
+                    </group>
+                    <footer>
+                        <button name="action_create_deliveries" string="Teslimat Oluştur" 
+                                type="object" class="btn-primary"/>
+                        <button string="İptal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Teslimat Oluşturma Sihirbazı Aksiyon -->
+        <record id="action_delivery_create_wizard" model="ir.actions.act_window">
+            <field name="name">Teslimat Oluştur</field>
+            <field name="res_model">delivery.create.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo> 

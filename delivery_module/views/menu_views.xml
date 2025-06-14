@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Ana Menü -->
+        <menuitem id="menu_delivery_root" 
+                  name="Teslimat" 
+                  sequence="10"/>
+
+        <!-- Teslimat Belgesi Menüsü -->
+        <menuitem id="menu_delivery_document" 
+                  name="Teslimatlar" 
+                  parent="menu_delivery_root" 
+                  action="action_delivery_document" 
+                  sequence="10"/>
+
+        <!-- Teslimat Planlaması Menüsü -->
+        <menuitem id="menu_delivery_planning" 
+                  name="Teslimat Planlamaları" 
+                  parent="menu_delivery_root" 
+                  action="action_delivery_planning" 
+                  sequence="20"/>
+
+        <!-- Stok Transfer Menüsüne Teslimat Oluşturma Aksiyonu -->
+        <record id="action_stock_picking_delivery_create" model="ir.actions.act_window">
+            <field name="name">Teslimat Oluştur</field>
+            <field name="res_model">delivery.create.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_picking_ids': active_ids}</field>
+        </record>
+
+        <menuitem id="menu_stock_picking_delivery_create" 
+                  name="Teslimat Oluştur" 
+                  parent="stock.menu_stock_root" 
+                  action="action_stock_picking_delivery_create" 
+                  sequence="100"/>
+    </data>
+</odoo> 
