@@ -40,7 +40,7 @@ class DeliveryDocument(models.Model):
     partner_phone = fields.Char(string='Telefon', related='partner_id.phone', readonly=True)
     
     # Adres bilgileri
-    delivery_address = fields.Text('Teslimat Adresi', related='picking_id.partner_id.street', readonly=True)
+    delivery_address = fields.Char('Teslimat Adresi', related='picking_id.partner_id.street', readonly=True)
     district = fields.Char('İlçe', compute='_compute_district', store=True)
     
     # Rota bilgileri
