@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Teslimat Yöneticisi Grubu -->
+        <record id="group_delivery_manager" model="res.groups">
+            <field name="name">Teslimat Yöneticisi</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Teslimat Kullanıcısı Grubu -->
+        <record id="group_delivery_user" model="res.groups">
+            <field name="name">Teslimat Kullanıcısı</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Teslimat Yöneticisi Kuralları -->
+        <record id="delivery_document_manager_rule" model="ir.rule">
+            <field name="name">Teslimat Belgeleri: Yönetici Erişimi</field>
+            <field name="model_id" ref="model_delivery_document"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_delivery_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Teslimat Kullanıcısı Kuralları -->
+        <record id="delivery_document_user_rule" model="ir.rule">
+            <field name="name">Teslimat Belgeleri: Kullanıcı Erişimi</field>
+            <field name="model_id" ref="model_delivery_document"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_delivery_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo> 
