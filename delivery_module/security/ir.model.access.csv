@@ -5,6 +5,8 @@ access_delivery_planning_user,delivery.planning.user,model_delivery_planning,gro
 access_delivery_planning_manager,delivery.planning.manager,model_delivery_planning,group_delivery_manager,1,1,1,1
 access_delivery_create_wizard_user,delivery.create.wizard.user,model_delivery_create_wizard,group_delivery_user,1,1,1,0
 access_delivery_create_wizard_manager,delivery.create.wizard.manager,model_delivery_create_wizard,group_delivery_manager,1,1,1,1
+access_delivery_day_user,delivery.day.user,model_delivery_day,group_delivery_user,1,0,0,0
+access_delivery_day_manager,delivery.day.manager,model_delivery_day,group_delivery_manager,1,1,1,1
 access_res_city_user,res.city.user,model_res_city,group_delivery_user,1,0,0,0
 access_res_city_manager,res.city.manager,model_res_city,group_delivery_manager,1,1,1,1
 access_res_city_district_user,res.city.district.user,model_res_city_district,group_delivery_user,1,0,0,0

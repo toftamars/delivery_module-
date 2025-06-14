@@ -24,6 +24,7 @@
     'data': [
         'security/delivery_security.xml',
         'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         'data/ir_sequence_data.xml',
         'data/delivery_data.xml',
         'views/res_partner_views.xml',
