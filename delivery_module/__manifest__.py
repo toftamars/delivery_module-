@@ -12,7 +12,15 @@
         - İlçe bazlı gün kısıtlamaları
     """,
     'author': 'Şirket Adı',
-    'depends': ['base', 'stock', 'sms'],
+    'depends': [
+        'base',
+        'stock',
+        'sms',
+        'base_address_extended',
+        'base_address_city',
+        'mail',
+        'web',
+    ],
     'data': [
         'security/delivery_security.xml',
         'security/ir.model.access.csv',
