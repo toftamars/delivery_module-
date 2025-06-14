@@ -29,6 +29,7 @@
         'views/delivery_views.xml',
         'views/delivery_planning_views.xml',
         'views/stock_picking_views.xml',
+        'views/delivery_day_views.xml',
         'views/menu_views.xml',
         'wizard/delivery_create_wizard_views.xml',
     ],
