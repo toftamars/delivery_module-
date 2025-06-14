@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_delivery_root" name="Teslimat" sequence="20"/>
+    
+    <menuitem id="menu_delivery_documents" name="Teslimat Belgeleri" 
+              parent="menu_delivery_root" sequence="10"
+              action="action_delivery_document"/>
+              
+    <menuitem id="menu_delivery_planning" name="Teslimat Planlama" 
+              parent="menu_delivery_root" sequence="20"
+              action="action_delivery_planning"/>
+</odoo> 

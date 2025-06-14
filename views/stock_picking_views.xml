@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Transfer Belgesi Form View İyileştirmesi -->
+    <record id="view_picking_form_delivery" model="ir.ui.view">
+        <field name="name">stock.picking.form.delivery</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_deliveries" type="object" 
+                        class="oe_stat_button" icon="fa-truck"
+                        attrs="{'invisible': [('delivery_document_count', '=', 0)]}">
+                    <field name="delivery_document_count" widget="statinfo" 
+                           string="Teslimat"/>
+                </button>
+                <button name="action_create_delivery" string="Teslimat Oluştur" 
+                        type="object" class="oe_stat_button" icon="fa-plus"
+                        attrs="{'invisible': [('ready_for_delivery', '=', False)]}"/>
+            </div>
+            
+            <field name="partner_id" position="after">
+                <field name="ready_for_delivery" invisible="1"/>
+                <field name="delivery_document_count" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo> 
