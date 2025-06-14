@@ -1,7 +1,7 @@
 {
     'name': 'Teslimat Modülü',
     'version': '16.0.1.0.0',
-    'category': 'Inventory/Delivery',
+    'category': 'Inventory',
     'summary': 'Transfer belgelerinden otomatik teslimat oluşturma ve yönetim',
     'description': """
         Teslimat Modülü:
