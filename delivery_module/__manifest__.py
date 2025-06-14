@@ -19,6 +19,7 @@
         'stock',
         'sale',
         'sms',
+        'fleet',
     ],
     'data': [
         'security/delivery_security.xml',
