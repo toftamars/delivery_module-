@@ -8,4 +8,6 @@ access_delivery_create_wizard_manager,delivery.create.wizard.manager,model_deliv
 access_res_city_user,res.city.user,model_res_city,stock.group_stock_user,1,0,0,0
 access_res_city_manager,res.city.manager,model_res_city,stock.group_stock_manager,1,1,1,1
 access_res_city_district_user,res.city.district.user,model_res_city_district,stock.group_stock_user,1,0,0,0
-access_res_city_district_manager,res.city.district.manager,model_res_city_district,stock.group_stock_manager,1,1,1,1 
+access_res_city_district_manager,res.city.district.manager,model_res_city_district,stock.group_stock_manager,1,1,1,1
+access_delivery_day_user,delivery.day.user,model_delivery_day,stock.group_stock_user,1,0,0,0
+access_delivery_day_manager,delivery.day.manager,model_delivery_day,stock.group_stock_manager,1,1,1,1 

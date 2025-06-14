@@ -19,6 +19,42 @@
             <field name="company_id" eval="False"/>
         </record>
 
+        <!-- Teslimat Günleri -->
+        <record id="delivery_day_monday" model="delivery.day">
+            <field name="name">Pazartesi</field>
+            <field name="code">monday</field>
+        </record>
+
+        <record id="delivery_day_tuesday" model="delivery.day">
+            <field name="name">Salı</field>
+            <field name="code">tuesday</field>
+        </record>
+
+        <record id="delivery_day_wednesday" model="delivery.day">
+            <field name="name">Çarşamba</field>
+            <field name="code">wednesday</field>
+        </record>
+
+        <record id="delivery_day_thursday" model="delivery.day">
+            <field name="name">Perşembe</field>
+            <field name="code">thursday</field>
+        </record>
+
+        <record id="delivery_day_friday" model="delivery.day">
+            <field name="name">Cuma</field>
+            <field name="code">friday</field>
+        </record>
+
+        <record id="delivery_day_saturday" model="delivery.day">
+            <field name="name">Cumartesi</field>
+            <field name="code">saturday</field>
+        </record>
+
+        <record id="delivery_day_sunday" model="delivery.day">
+            <field name="name">Pazar</field>
+            <field name="code">sunday</field>
+        </record>
+
         <!-- Örnek Şehirler -->
         <record id="city_istanbul" model="res.city">
             <field name="name">İstanbul</field>
@@ -32,19 +68,31 @@
         <record id="district_kadikoy" model="res.city.district">
             <field name="name">Kadıköy</field>
             <field name="city_id" ref="city_istanbul"/>
-            <field name="delivery_days">monday,wednesday,friday</field>
+            <field name="delivery_days" eval="[(6, 0, [
+                ref('delivery_day_monday'),
+                ref('delivery_day_wednesday'),
+                ref('delivery_day_friday')
+            ])]"/>
         </record>
 
         <record id="district_besiktas" model="res.city.district">
             <field name="name">Beşiktaş</field>
             <field name="city_id" ref="city_istanbul"/>
-            <field name="delivery_days">tuesday,thursday,saturday</field>
+            <field name="delivery_days" eval="[(6, 0, [
+                ref('delivery_day_tuesday'),
+                ref('delivery_day_thursday'),
+                ref('delivery_day_saturday')
+            ])]"/>
         </record>
 
         <record id="district_cankaya" model="res.city.district">
             <field name="name">Çankaya</field>
             <field name="city_id" ref="city_ankara"/>
-            <field name="delivery_days">monday,wednesday,friday</field>
+            <field name="delivery_days" eval="[(6, 0, [
+                ref('delivery_day_monday'),
+                ref('delivery_day_wednesday'),
+                ref('delivery_day_friday')
+            ])]"/>
         </record>
     </data>
 </odoo> 
