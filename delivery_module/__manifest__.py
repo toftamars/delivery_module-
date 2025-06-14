@@ -17,6 +17,7 @@
         'security/delivery_security.xml',
         'security/ir.model.access.csv',
         'data/delivery_data.xml',
+        'views/res_partner_views.xml',
         'views/delivery_views.xml',
         'views/delivery_planning_views.xml',
         'views/stock_picking_views.xml',
