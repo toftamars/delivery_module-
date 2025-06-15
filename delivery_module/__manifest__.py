@@ -1,7 +1,7 @@
 {
     'name': 'Teslimat Modülü',
     'version': '1.0',
-    'category': 'Inventory/Delivery',
+    'category': 'Inventory',
     'summary': 'Teslimat yönetimi için modül',
     'description': """
         Teslimat yönetimi için modül.
