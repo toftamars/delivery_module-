@@ -21,6 +21,7 @@
         'mail',
         'web',
         'contacts',
+        'sms',
     ],
     'data': [
         'security/delivery_security.xml',

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class DeliveryDocument(models.Model):
     _name = 'delivery.document'
@@ -41,15 +42,43 @@ class DeliveryDocument(models.Model):
 
     def action_approve(self):
         self.write({'state': 'approved'})
+        self._send_sms_notification('approved')
 
     def action_start(self):
         self.write({'state': 'in_delivery'})
+        self._send_sms_notification('in_delivery')
 
     def action_complete(self):
         self.write({'state': 'completed'})
+        self._send_sms_notification('completed')
 
     def action_cancel(self):
         self.write({'state': 'canceled'})
+        self._send_sms_notification('canceled')
 
     def action_draft(self):
-        self.write({'state': 'draft'}) 
+        self.write({'state': 'draft'})
+
+    def _send_sms_notification(self, state):
+        if not self.partner_id.mobile:
+            return
+
+        message = self._get_sms_message(state)
+        if message:
+            try:
+                self.env['sms.sms'].create({
+                    'body': message,
+                    'partner_id': self.partner_id.id,
+                    'mobile': self.partner_id.mobile,
+                }).send()
+            except Exception as e:
+                raise UserError(f'SMS gönderilemedi: {str(e)}')
+
+    def _get_sms_message(self, state):
+        messages = {
+            'approved': f'Sayın {self.partner_id.name}, {self.date} tarihli {self.name} numaralı teslimatınız onaylanmıştır.',
+            'in_delivery': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız yola çıkmıştır. Sürücü: {self.driver_id.name}',
+            'completed': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız tamamlanmıştır.',
+            'canceled': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız iptal edilmiştir.'
+        }
+        return messages.get(state) 
