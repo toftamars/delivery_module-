@@ -24,7 +24,6 @@
         'contacts',
         'sms',
         'resource',
-        'fleet',
     ],
     'data': [
         'security/delivery_security.xml',
