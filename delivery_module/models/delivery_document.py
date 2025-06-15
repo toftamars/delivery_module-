@@ -9,7 +9,15 @@ class DeliveryDocument(models.Model):
     date = fields.Date(string='Teslimat Tarihi', required=True, default=fields.Date.context_today)
     partner_id = fields.Many2one('res.partner', string='Müşteri', required=True)
     district_id = fields.Many2one('res.city.district', string='İlçe', related='partner_id.district_id', store=True)
-    delivery_day_ids = fields.Many2many('delivery.day', string='Teslimat Günleri', related='partner_id.delivery_day_ids', store=True)
+    delivery_day_ids = fields.Many2many(
+        'delivery.day',
+        'delivery_document_delivery_day_rel',
+        'document_id',
+        'day_id',
+        string='Teslimat Günleri',
+        related='partner_id.delivery_day_ids',
+        store=True
+    )
     picking_id = fields.Many2one('stock.picking', string='Transfer Belgesi', required=True)
     picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
     driver_id = fields.Many2one('res.partner', string='Sürücü', required=True, domain=[('is_driver', '=', True)])
