@@ -16,12 +16,15 @@
     'website': 'https://www.zuhalmuzik.com',
     'depends': [
         'base',
+        'base_setup',
         'stock',
         'sale',
         'mail',
         'web',
         'contacts',
         'sms',
+        'resource',
+        'fleet',
     ],
     'data': [
         'security/delivery_security.xml',
