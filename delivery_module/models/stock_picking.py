@@ -3,19 +3,19 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    delivery_id = fields.Many2one('delivery.document', string='Teslimat Belgesi', readonly=True)
-    is_delivery_created = fields.Boolean(string='Teslimat Oluşturuldu', default=False, copy=False)
-    delivery_date = fields.Date(string='Teslimat Tarihi', related='delivery_id.date', store=True)
-    delivery_state = fields.Selection([
-        ('draft', 'Taslak'),
-        ('approved', 'Onaylandı'),
-        ('in_delivery', 'Teslimatta'),
-        ('completed', 'Tamamlandı'),
-        ('canceled', 'İptal')
-    ], string='Teslimat Durumu', related='delivery_id.state', store=True)
-    driver_id = fields.Many2one('res.partner', string='Sürücü', related='delivery_id.driver_id', store=True)
+    delivery_document_ids = fields.One2many('delivery.document', 'picking_id', string='Teslimat Belgeleri')
+    delivery_date = fields.Date(string='Teslimat Tarihi')
+    driver_id = fields.Many2one('res.partner', string='Sürücü', domain=[('is_driver', '=', True)])
     district_id = fields.Many2one('res.city.district', string='İlçe', related='partner_id.district_id', store=True)
-    delivery_day_ids = fields.Many2many('delivery.day', string='Teslimat Günleri', related='partner_id.delivery_day_ids', store=True)
+    delivery_day_ids = fields.Many2many(
+        'delivery.day',
+        'stock_picking_delivery_day_rel',
+        'picking_id',
+        'day_id',
+        string='Teslimat Günleri',
+        related='partner_id.delivery_day_ids',
+        store=True
+    )
 
     def action_create_delivery(self):
         self.ensure_one()
