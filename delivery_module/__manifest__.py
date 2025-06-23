@@ -36,6 +36,7 @@
         'views/delivery_vehicle_views.xml',
         'views/delivery_day_views.xml',
         'views/res_partner_views.xml',
+        'views/res_city_views.xml',
         'views/res_city_district_views.xml',
         'views/action_views.xml',
         'wizard/delivery_create_wizard_views.xml',
