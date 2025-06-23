@@ -6,42 +6,49 @@
             <field name="name">Pazartesi</field>
             <field name="day_of_week">0</field>
             <field name="sequence">10</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_tuesday" model="delivery.day">
             <field name="name">Salı</field>
             <field name="day_of_week">1</field>
             <field name="sequence">20</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_wednesday" model="delivery.day">
             <field name="name">Çarşamba</field>
             <field name="day_of_week">2</field>
             <field name="sequence">30</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_thursday" model="delivery.day">
             <field name="name">Perşembe</field>
             <field name="day_of_week">3</field>
             <field name="sequence">40</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_friday" model="delivery.day">
             <field name="name">Cuma</field>
             <field name="day_of_week">4</field>
             <field name="sequence">50</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_saturday" model="delivery.day">
             <field name="name">Cumartesi</field>
             <field name="day_of_week">5</field>
             <field name="sequence">60</field>
+            <field name="active">True</field>
         </record>
 
         <record id="delivery_day_sunday" model="delivery.day">
             <field name="name">Pazar</field>
             <field name="day_of_week">6</field>
             <field name="sequence">70</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Teslimat Araçları -->

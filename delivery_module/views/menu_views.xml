@@ -39,6 +39,14 @@
                   sequence="40"
                   groups="base.group_user"/>
 
+        <!-- İlçeler Menüsü -->
+        <menuitem id="menu_res_city_district"
+                  name="İlçeler"
+                  parent="menu_delivery_root"
+                  action="delivery_module.action_res_city_district"
+                  sequence="50"
+                  groups="base.group_user"/>
+
         <!-- Konfigürasyon Menüsü -->
         <menuitem id="menu_delivery_config"
                   name="Konfigürasyon"
