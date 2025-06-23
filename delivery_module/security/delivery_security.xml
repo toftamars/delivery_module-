@@ -87,7 +87,7 @@
             <field name="name">Teslimat Aracı Erişim Kuralı</field>
             <field name="model_id" ref="model_delivery_vehicle"/>
             <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_delivery_user')), (4, ref('group_delivery_manager')), (4, ref('group_delivery_driver'))]"/>
+            <field name="groups" eval="[(4, ref('base.group_user')), (4, ref('group_delivery_user')), (4, ref('group_delivery_manager')), (4, ref('group_delivery_driver'))]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
