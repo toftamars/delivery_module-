@@ -105,5 +105,17 @@
             <field name="perm_create" eval="True"/>
             <field name="perm_unlink" eval="False"/>
         </record>
+
+        <!-- Teslimat Günü Kuralı -->
+        <record id="delivery_day_rule" model="ir.rule">
+            <field name="name">Teslimat Günü Kuralı</field>
+            <field name="model_id" ref="model_delivery_day"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user')), (4, ref('group_delivery_user')), (4, ref('group_delivery_manager')), (4, ref('group_delivery_driver'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
     </data>
 </odoo> 
