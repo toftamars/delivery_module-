@@ -39,6 +39,14 @@
                   sequence="40"
                   groups="base.group_user"/>
 
+        <!-- Teslimat Programı Kurulumu Menüsü -->
+        <menuitem id="menu_setup_delivery_schedule"
+                  name="Teslimat Programı Kurulumu"
+                  parent="menu_delivery_root"
+                  action="delivery_module.action_setup_delivery_schedule_wizard"
+                  sequence="45"
+                  groups="base.group_user"/>
+
         <!-- Konfigürasyon Menüsü -->
         <menuitem id="menu_delivery_config"
                   name="Konfigürasyon"

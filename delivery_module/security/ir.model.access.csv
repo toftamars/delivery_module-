@@ -12,6 +12,8 @@ access_delivery_limit_warning_wizard_user,delivery.limit.warning.wizard.user,mod
 access_delivery_limit_warning_wizard_manager,delivery.limit.warning.wizard.manager,model_delivery_limit_warning_wizard,group_delivery_manager,1,1,1,1
 access_delivery_day_closure_wizard_user,delivery.day.closure.wizard.user,model_delivery_day_closure_wizard,base.group_user,1,1,1,0
 access_delivery_day_closure_wizard_manager,delivery.day.closure.wizard.manager,model_delivery_day_closure_wizard,group_delivery_manager,1,1,1,1
+access_setup_delivery_schedule_wizard_user,setup.delivery.schedule.wizard.user,model_setup_delivery_schedule_wizard,base.group_user,1,1,1,0
+access_setup_delivery_schedule_wizard_manager,setup.delivery.schedule.wizard.manager,model_setup_delivery_schedule_wizard,group_delivery_manager,1,1,1,1
 access_res_city_user,res.city.user,model_res_city,base.group_user,1,1,1,0
 access_res_city_manager,res.city.manager,model_res_city,group_delivery_manager,1,1,1,1
 access_res_city_district_user,res.city.district.user,model_res_city_district,base.group_user,1,1,1,0

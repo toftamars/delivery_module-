@@ -42,6 +42,7 @@
         'wizard/delivery_create_wizard_views.xml',
         'wizard/delivery_limit_warning_wizard_views.xml',
         'wizard/delivery_day_closure_wizard_views.xml',
+        'wizard/setup_delivery_schedule_wizard_views.xml',
         'views/menu_views.xml',
     ],
     'demo': [],
