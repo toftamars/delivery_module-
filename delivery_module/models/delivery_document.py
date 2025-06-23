@@ -29,12 +29,17 @@ class DeliveryDocument(models.Model):
 
     def action_view_pickings(self):
         return {
-            'name': 'Transferler',
+            'name': _('Transfer Belgeleri'),
             'type': 'ir.actions.act_window',
             'res_model': 'stock.picking',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.picking_ids.ids)],
+            'context': {'default_partner_id': self.partner_id.id},
         }
+
+    def action_view_picking_count(self):
+        """Transfer sayısına tıklandığında transferleri göster"""
+        return self.action_view_pickings()
 
     @api.model_create_multi
     def create(self, vals_list):
