@@ -11,6 +11,7 @@
                     <field name="day_of_week"/>
                     <field name="status"/>
                     <field name="district_count"/>
+                    <field name="district_list" string="Teslimat İlçeleri"/>
                     <field name="anatolian_districts" string="Anadolu Yakası"/>
                     <field name="european_districts" string="Avrupa Yakası"/>
                     <field name="is_temporarily_closed"/>
@@ -51,6 +52,7 @@
                         
                         <!-- Teslimat İlçeleri Bilgisi -->
                         <group>
+                            <field name="district_list" string="Teslimat İlçeleri (Yaka Bazlı)" readonly="1"/>
                             <field name="anatolian_districts" string="Anadolu Yakası İlçeleri" readonly="1"/>
                             <field name="european_districts" string="Avrupa Yakası İlçeleri" readonly="1"/>
                         </group>

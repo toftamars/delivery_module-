@@ -60,10 +60,33 @@ class DeliveryDay(models.Model):
     def _compute_district_list(self):
         for day in self:
             if day.district_ids:
-                district_names = []
+                # Anadolu Yakası ilçeleri
+                anatolian_district_names = [
+                    'Maltepe', 'Kartal', 'Pendik', 'Tuzla', 'Üsküdar', 'Kadıköy', 
+                    'Ataşehir', 'Ümraniye', 'Sancaktepe', 'Çekmeköy', 'Beykoz', 
+                    'Şile', 'Sultanbeyli'
+                ]
+                
+                anatolian_districts = []
+                european_districts = []
+                
                 for district in day.district_ids.sorted('name'):
-                    district_names.append(f"{district.name} ({district.city_id.name})")
-                day.district_list = ", ".join(district_names)
+                    district_info = f"{district.name} ({district.city_id.name})"
+                    if district.name in anatolian_district_names:
+                        anatolian_districts.append(district_info)
+                    else:
+                        european_districts.append(district_info)
+                
+                # Yaka bazlı liste oluştur
+                district_list_parts = []
+                
+                if anatolian_districts:
+                    district_list_parts.append(f"ANADOLU YAKASI: {', '.join(anatolian_districts)}")
+                
+                if european_districts:
+                    district_list_parts.append(f"AVRUPA YAKASI: {', '.join(european_districts)}")
+                
+                day.district_list = " | ".join(district_list_parts)
             else:
                 day.district_list = "Teslimat ilçesi tanımlanmamış"
 
