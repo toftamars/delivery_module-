@@ -50,7 +50,6 @@
     'assets': {
         'web.assets_backend': [
             'delivery_module/static/src/js/delivery_map.js',
-            'delivery_module/static/src/xml/delivery_map.xml',
         ],
     },
     'demo': [],

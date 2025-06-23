@@ -7,6 +7,36 @@ odoo.define('delivery_module.delivery_map', function (require) {
 
     var QWeb = core.qweb;
 
+    // Template'i inline olarak tanımla
+    QWeb.templates['delivery_map_template'] = `
+        <div class="delivery_map_widget">
+            <div class="route-info alert alert-info" style="margin-bottom: 10px;">
+                <strong>Rota Bilgileri:</strong> Yükleniyor...
+            </div>
+            <div class="delivery-map-container" style="height: 400px; width: 100%; border: 1px solid #ccc; border-radius: 4px; position: relative; background-color: #f8f9fa;">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <div class="text-muted">
+                        <i class="fa fa-map-marker" style="font-size: 2em; margin-bottom: 10px;"></i>
+                        <br>
+                        Harita yükleniyor...
+                    </div>
+                </div>
+            </div>
+            <style>
+                .delivery_map_widget {
+                    padding: 10px;
+                }
+                .route-info {
+                    padding: 10px;
+                    border-radius: 4px;
+                }
+                .delivery-map-container {
+                    min-height: 400px;
+                }
+            </style>
+        </div>
+    `;
+
     var DeliveryMapWidget = AbstractField.extend({
         template: 'delivery_map_template',
         supportedFieldTypes: ['char'],
