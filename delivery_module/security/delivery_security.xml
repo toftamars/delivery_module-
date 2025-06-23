@@ -27,11 +27,11 @@
             <field name="perm_unlink" eval="True"/>
         </record>
 
-        <!-- Teslimat Sürücüsü Yetkileri -->
+        <!-- Teslimat Sürücüsü Yetkileri - Sadece kendi araçlarındaki teslimatları görebilir -->
         <record id="delivery_driver_rule" model="ir.rule">
             <field name="name">Teslimat Sürücüsü Kuralı</field>
             <field name="model_id" ref="model_delivery_document"/>
-            <field name="domain_force">[('driver_id', '=', user.id)]</field>
+            <field name="domain_force">[('vehicle_id', '!=', False)]</field>
             <field name="groups" eval="[(4, ref('group_delivery_driver'))]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
