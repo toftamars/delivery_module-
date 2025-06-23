@@ -82,6 +82,11 @@ class DeliveryCreateWizard(models.TransientModel):
         if self.date and self.district_id:
             # Seçilen tarihin uygun bir gün olup olmadığını kontrol et
             day_of_week = str(self.date.weekday())
+            
+            # Debug için gün bilgisini yazdır
+            day_names = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
+            selected_day_name = day_names[self.date.weekday()]
+            
             available_day = self.env['delivery.day'].search([
                 ('day_of_week', '=', day_of_week),
                 ('active', '=', True),
@@ -92,7 +97,7 @@ class DeliveryCreateWizard(models.TransientModel):
                 return {
                     'warning': {
                         'title': 'Uyarı',
-                        'message': f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")}) bu ilçe için uygun bir teslimat günü değil.'
+                        'message': f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")} - {selected_day_name}) bu ilçe için uygun bir teslimat günü değil.'
                     }
                 }
 
@@ -126,7 +131,9 @@ class DeliveryCreateWizard(models.TransientModel):
         ], limit=1)
         
         if not available_day:
-            raise UserError(_(f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")}) bu ilçe için uygun bir teslimat günü değil.'))
+            day_names = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
+            selected_day_name = day_names[self.date.weekday()]
+            raise UserError(_(f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")} - {selected_day_name}) bu ilçe için uygun bir teslimat günü değil.'))
 
         # Aracın günlük limitini kontrol et
         today_count = self.env['delivery.document'].search_count([
