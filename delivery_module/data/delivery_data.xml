@@ -20,21 +20,27 @@
             <field name="active">True</field>
         </record>
 
-        <!-- İstanbul İlçeleri -->
-        <record id="district_kadikoy" model="res.city.district">
-            <field name="name">Kadıköy</field>
+        <!-- İstanbul İlçeleri - Anadolu Yakası -->
+        <record id="district_maltepe" model="res.city.district">
+            <field name="name">Maltepe</field>
             <field name="city_id" ref="city_istanbul"/>
             <field name="active">True</field>
         </record>
 
-        <record id="district_besiktas" model="res.city.district">
-            <field name="name">Beşiktaş</field>
+        <record id="district_kartal" model="res.city.district">
+            <field name="name">Kartal</field>
             <field name="city_id" ref="city_istanbul"/>
             <field name="active">True</field>
         </record>
 
-        <record id="district_sisli" model="res.city.district">
-            <field name="name">Şişli</field>
+        <record id="district_pendik" model="res.city.district">
+            <field name="name">Pendik</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_tuzla" model="res.city.district">
+            <field name="name">Tuzla</field>
             <field name="city_id" ref="city_istanbul"/>
             <field name="active">True</field>
         </record>
@@ -45,8 +51,195 @@
             <field name="active">True</field>
         </record>
 
+        <record id="district_kadikoy" model="res.city.district">
+            <field name="name">Kadıköy</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_atasehir" model="res.city.district">
+            <field name="name">Ataşehir</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_umraniye" model="res.city.district">
+            <field name="name">Ümraniye</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sancaktepe" model="res.city.district">
+            <field name="name">Sancaktepe</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_cekmekoy" model="res.city.district">
+            <field name="name">Çekmeköy</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_beykoz" model="res.city.district">
+            <field name="name">Beykoz</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sile" model="res.city.district">
+            <field name="name">Şile</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sultanbeyli" model="res.city.district">
+            <field name="name">Sultanbeyli</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- İstanbul İlçeleri - Avrupa Yakası -->
+        <record id="district_beyoglu" model="res.city.district">
+            <field name="name">Beyoğlu</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sisli" model="res.city.district">
+            <field name="name">Şişli</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_besiktas" model="res.city.district">
+            <field name="name">Beşiktaş</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_kagithane" model="res.city.district">
+            <field name="name">Kağıthane</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sariyer" model="res.city.district">
+            <field name="name">Sarıyer</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_bakirkoy" model="res.city.district">
+            <field name="name">Bakırköy</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_bahcelievler" model="res.city.district">
+            <field name="name">Bahçelievler</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_gungoren" model="res.city.district">
+            <field name="name">Güngören</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_esenler" model="res.city.district">
+            <field name="name">Esenler</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_bagcilar" model="res.city.district">
+            <field name="name">Bağcılar</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_eyupsultan" model="res.city.district">
+            <field name="name">Eyüpsultan</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_gaziosmanpasa" model="res.city.district">
+            <field name="name">Gaziosmanpaşa</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_kucukcekmece" model="res.city.district">
+            <field name="name">Küçükçekmece</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_avcilar" model="res.city.district">
+            <field name="name">Avcılar</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_basaksehir" model="res.city.district">
+            <field name="name">Başakşehir</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_sultangazi" model="res.city.district">
+            <field name="name">Sultangazi</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_arnavutkoy" model="res.city.district">
+            <field name="name">Arnavutköy</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
         <record id="district_fatih" model="res.city.district">
             <field name="name">Fatih</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_zeytinburnu" model="res.city.district">
+            <field name="name">Zeytinburnu</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_bayrampasa" model="res.city.district">
+            <field name="name">Bayrampaşa</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_esenyurt" model="res.city.district">
+            <field name="name">Esenyurt</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_beylikduzu" model="res.city.district">
+            <field name="name">Beylikdüzü</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_silivri" model="res.city.district">
+            <field name="name">Silivri</field>
+            <field name="city_id" ref="city_istanbul"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="district_catalca" model="res.city.district">
+            <field name="name">Çatalca</field>
             <field name="city_id" ref="city_istanbul"/>
             <field name="active">True</field>
         </record>
