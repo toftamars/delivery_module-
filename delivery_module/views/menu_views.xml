@@ -39,6 +39,14 @@
                   sequence="40"
                   groups="base.group_user"/>
 
+        <!-- Teslimat Fotoğrafları Menüsü -->
+        <menuitem id="menu_delivery_photo"
+                  name="Teslimat Fotoğrafları"
+                  parent="menu_delivery_root"
+                  action="delivery_module.action_delivery_photo"
+                  sequence="42"
+                  groups="base.group_user"/>
+
         <!-- Teslimat Programı Kurulumu Menüsü -->
         <menuitem id="menu_setup_delivery_schedule"
                   name="Teslimat Programı Kurulumu"

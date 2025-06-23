@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Teslimat Fotoğrafı Tree Görünümü -->
+        <record id="view_delivery_photo_tree" model="ir.ui.view">
+            <field name="name">delivery.photo.tree</field>
+            <field name="model">delivery.photo</field>
+            <field name="arch" type="xml">
+                <tree string="Teslimat Fotoğrafları">
+                    <field name="name"/>
+                    <field name="delivery_id"/>
+                    <field name="photo_type"/>
+                    <field name="taken_by"/>
+                    <field name="taken_date"/>
+                    <field name="file_size"/>
+                    <button name="action_view_delivery" type="object" icon="fa-external-link" string="Teslimat"/>
+                    <button name="action_download_photo" type="object" icon="fa-download" string="İndir"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Teslimat Fotoğrafı Form Görünümü -->
+        <record id="view_delivery_photo_form" model="ir.ui.view">
+            <field name="name">delivery.photo.form</field>
+            <field name="model">delivery.photo</field>
+            <field name="arch" type="xml">
+                <form string="Teslimat Fotoğrafı">
+                    <header>
+                        <button name="action_view_delivery" string="Teslimat Belgesi" type="object" class="btn-secondary"/>
+                        <button name="action_download_photo" string="İndir" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Fotoğraf Adı"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="delivery_id"/>
+                                <field name="photo_type"/>
+                                <field name="taken_by"/>
+                            </group>
+                            <group>
+                                <field name="taken_date"/>
+                                <field name="file_size"/>
+                                <field name="image_filename"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Fotoğraf hakkında açıklama..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Teslimat Fotoğrafı Search Görünümü -->
+        <record id="view_delivery_photo_search" model="ir.ui.view">
+            <field name="name">delivery.photo.search</field>
+            <field name="model">delivery.photo</field>
+            <field name="arch" type="xml">
+                <search string="Teslimat Fotoğrafları">
+                    <field name="name"/>
+                    <field name="delivery_id"/>
+                    <field name="taken_by"/>
+                    <filter string="Kurulum Öncesi" name="before" domain="[('photo_type', '=', 'before')]"/>
+                    <filter string="Kurulum Sırasında" name="during" domain="[('photo_type', '=', 'during')]"/>
+                    <filter string="Kurulum Sonrası" name="after" domain="[('photo_type', '=', 'after')]"/>
+                    <filter string="Tamamlanma" name="completion" domain="[('photo_type', '=', 'completion')]"/>
+                    <filter string="Sorun/Arıza" name="problem" domain="[('photo_type', '=', 'problem')]"/>
+                    <group expand="0" string="Grupla">
+                        <filter string="Fotoğraf Tipi" name="photo_type" context="{'group_by': 'photo_type'}"/>
+                        <filter string="Teslimat" name="delivery" context="{'group_by': 'delivery_id'}"/>
+                        <filter string="Çeken Kişi" name="taken_by" context="{'group_by': 'taken_by'}"/>
+                        <filter string="Tarih" name="date" context="{'group_by': 'taken_date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Teslimat Fotoğrafı Action -->
+        <record id="action_delivery_photo" model="ir.actions.act_window">
+            <field name="name">Teslimat Fotoğrafları</field>
+            <field name="res_model">delivery.photo</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Henüz teslimat fotoğrafı eklenmemiş
+                </p>
+                <p>
+                    Teslimat belgelerine fotoğraf ekleyerek kurulum sürecini belgeleyebilirsiniz.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo> 

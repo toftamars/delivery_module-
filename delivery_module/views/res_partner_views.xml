@@ -14,6 +14,17 @@
                 <xpath expr="//field[@name='email']" position="after">
                     <field name="is_driver"/>
                 </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Harita" name="map">
+                        <group>
+                            <group>
+                                <field name="partner_latitude"/>
+                                <field name="partner_longitude"/>
+                            </group>
+                        </group>
+                        <field name="partner_latitude" widget="map" readonly="1"/>
+                    </page>
+                </xpath>
             </field>
         </record>
     </data>

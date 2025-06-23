@@ -1,5 +1,11 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import math
+import requests
+import json
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class DeliveryDocument(models.Model):
     _name = 'delivery.document'
@@ -22,10 +28,148 @@ class DeliveryDocument(models.Model):
     delivery_address = fields.Char('Teslimat Adresi', related='partner_id.street', readonly=True)
     picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
     picking_count = fields.Integer(compute='_compute_picking_count', string='Transfer Sayısı')
+    
+    # Harita ve rota alanları
+    start_latitude = fields.Float('Başlangıç Enlem', default=41.0082)  # İstanbul merkez
+    start_longitude = fields.Float('Başlangıç Boylam', default=28.9784)
+    end_latitude = fields.Float('Hedef Enlem', compute='_compute_end_coordinates', store=True)
+    end_longitude = fields.Float('Hedef Boylam', compute='_compute_end_coordinates', store=True)
+    route_distance = fields.Float('Rota Mesafesi (km)', compute='_compute_route_distance', store=True)
+    route_duration = fields.Float('Tahmini Süre (dk)', compute='_compute_route_duration', store=True)
+    show_map = fields.Boolean('Haritayı Göster', default=True)
+    
+    # Fotoğraf alanları
+    delivery_photo_ids = fields.One2many('delivery.photo', 'delivery_id', string='Teslimat Fotoğrafları')
+    delivery_photo_count = fields.Integer(compute='_compute_photo_count', string='Fotoğraf Sayısı')
+    has_photos = fields.Boolean(compute='_compute_has_photos', string='Fotoğraf Var mı?')
 
     def _compute_picking_count(self):
         for delivery in self:
             delivery.picking_count = len(delivery.picking_ids)
+
+    def _compute_end_coordinates(self):
+        """Müşteri adresinden koordinatları hesaplar"""
+        for delivery in self:
+            if delivery.partner_id and delivery.partner_id.partner_latitude and delivery.partner_id.partner_longitude:
+                delivery.end_latitude = delivery.partner_id.partner_latitude
+                delivery.end_longitude = delivery.partner_id.partner_longitude
+            else:
+                # Varsayılan İstanbul koordinatları
+                delivery.end_latitude = 41.0082
+                delivery.end_longitude = 28.9784
+
+    def _compute_route_distance(self):
+        """Rota mesafesini hesaplar (Haversine formülü)"""
+        for delivery in self:
+            if delivery.start_latitude and delivery.start_longitude and delivery.end_latitude and delivery.end_longitude:
+                # Haversine formülü ile mesafe hesaplama
+                R = 6371  # Dünya yarıçapı (km)
+                lat1, lon1 = math.radians(delivery.start_latitude), math.radians(delivery.start_longitude)
+                lat2, lon2 = math.radians(delivery.end_latitude), math.radians(delivery.end_longitude)
+                
+                dlat = lat2 - lat1
+                dlon = lon2 - lon1
+                
+                a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                c = 2 * math.asin(math.sqrt(a))
+                
+                delivery.route_distance = round(R * c, 2)
+            else:
+                delivery.route_distance = 0.0
+
+    def _compute_route_duration(self):
+        """Tahmini süreyi hesaplar (ortalama 30 km/saat)"""
+        for delivery in self:
+            if delivery.route_distance > 0:
+                # Ortalama 30 km/saat hızla
+                delivery.route_duration = round((delivery.route_distance / 30) * 60, 1)
+            else:
+                delivery.route_duration = 0.0
+
+    def _compute_photo_count(self):
+        """Fotoğraf sayısını hesaplar"""
+        for delivery in self:
+            delivery.delivery_photo_count = len(delivery.delivery_photo_ids)
+
+    def _compute_has_photos(self):
+        """Fotoğraf var mı kontrol eder"""
+        for delivery in self:
+            delivery.has_photos = len(delivery.delivery_photo_ids) > 0
+
+    def refresh_route(self):
+        """Rota yenileme butonu için metod"""
+        route_data = self._get_osrm_route_data()
+        if route_data:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Rota Güncellendi',
+                    'message': f'Mesafe: {route_data["distance"]:.2f} km, Süre: {route_data["duration"]:.1f} dakika',
+                    'type': 'success',
+                }
+            }
+        else:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Rota Hatası',
+                    'message': 'Rota bilgileri alınamadı. Lütfen koordinatları kontrol edin.',
+                    'type': 'warning',
+                }
+            }
+
+    def _get_osrm_route_data(self):
+        """OSRM API'den gerçek rota alır"""
+        for delivery in self:
+            if not (delivery.start_latitude and delivery.start_longitude and 
+                   delivery.end_latitude and delivery.end_longitude):
+                continue
+                
+            try:
+                # OSRM API endpoint
+                url = "http://router.project-osrm.org/route/v1/driving/{},{};{},{}".format(
+                    delivery.start_longitude, delivery.start_latitude,
+                    delivery.end_longitude, delivery.end_latitude
+                )
+                
+                params = {
+                    'overview': 'full',  # Tam rota geometrisi
+                    'geometries': 'geojson',  # GeoJSON format
+                    'steps': 'true'  # Adım adım talimatlar
+                }
+                
+                response = requests.get(url, params=params, timeout=10)
+                response.raise_for_status()
+                
+                data = response.json()
+                
+                if data.get('code') == 'Ok' and data.get('routes'):
+                    route = data['routes'][0]
+                    
+                    # Gerçek mesafe ve süre
+                    real_distance = route.get('distance', 0) / 1000  # km'ye çevir
+                    real_duration = route.get('duration', 0) / 60  # dakikaya çevir
+                    
+                    # Alanları güncelle
+                    delivery.route_distance = round(real_distance, 2)
+                    delivery.route_duration = round(real_duration, 1)
+                    
+                    # Rota koordinatlarını döndür
+                    return {
+                        'coordinates': route.get('geometry', {}).get('coordinates', []),
+                        'distance': real_distance,
+                        'duration': real_duration,
+                        'steps': route.get('legs', [{}])[0].get('steps', [])
+                    }
+                    
+            except Exception as e:
+                _logger.error(f"OSRM API hatası: {e}")
+                # Hata durumunda varsayılan hesaplama kullan
+                continue
+                
+        return None
 
     def action_view_pickings(self):
         return {
@@ -35,6 +179,17 @@ class DeliveryDocument(models.Model):
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.picking_ids.ids)],
             'context': {'default_partner_id': self.partner_id.id},
+        }
+
+    def action_view_photos(self):
+        """Fotoğrafları görüntüle"""
+        return {
+            'name': _('Teslimat Fotoğrafları'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'delivery.photo',
+            'view_mode': 'tree,form',
+            'domain': [('delivery_id', '=', self.id)],
+            'context': {'default_delivery_id': self.id},
         }
 
     def action_view_picking_count(self):

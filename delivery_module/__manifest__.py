@@ -35,6 +35,7 @@
         'views/delivery_views.xml',
         'views/delivery_vehicle_views.xml',
         'views/delivery_day_views.xml',
+        'views/delivery_photo_views.xml',
         'views/res_partner_views.xml',
         'views/res_city_views.xml',
         'views/res_city_district_views.xml',
@@ -44,8 +45,15 @@
         'wizard/delivery_day_closure_wizard_views.xml',
         'wizard/delivery_vehicle_closure_wizard_views.xml',
         'wizard/setup_delivery_schedule_wizard_views.xml',
+        'wizard/delivery_photo_wizard_views.xml',
         'views/menu_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'delivery_module/static/src/js/delivery_map.js',
+            'delivery_module/static/src/xml/delivery_map.xml',
+        ],
+    },
     'demo': [],
     'installable': True,
     'application': True,

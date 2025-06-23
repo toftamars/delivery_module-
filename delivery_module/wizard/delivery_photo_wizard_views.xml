@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fotoğraf Ekleme Wizard Form Görünümü -->
+        <record id="view_delivery_photo_wizard_form" model="ir.ui.view">
+            <field name="name">delivery.photo.wizard.form</field>
+            <field name="model">delivery.photo.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Teslimat Fotoğrafı Ekle">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="delivery_id" readonly="1"/>
+                                <field name="photo_type"/>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="image_filename" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Fotoğraf hakkında açıklama ekleyin..."/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_add_photo" string="Fotoğrafı Ekle" type="object" class="btn-primary"/>
+                        <button string="İptal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fotoğraf Ekleme Wizard Action -->
+        <record id="action_delivery_photo_wizard" model="ir.actions.act_window">
+            <field name="name">Fotoğraf Ekle</field>
+            <field name="res_model">delivery.photo.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_delivery_id': active_id}</field>
+        </record>
+    </data>
+</odoo> 
