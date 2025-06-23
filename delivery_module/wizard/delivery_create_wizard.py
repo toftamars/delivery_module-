@@ -6,18 +6,147 @@ class DeliveryCreateWizard(models.TransientModel):
     _description = 'Teslimat Oluşturma Sihirbazı'
 
     date = fields.Date('Teslimat Tarihi', required=True, default=fields.Date.context_today)
-    driver_id = fields.Many2one('res.partner', string='Sürücü', domain=[('is_driver', '=', True)])
-    picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
+    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True)
+    picking_name = fields.Char('Transfer Numarası', required=True, help='Transfer numarasını girin (örn: WH/OUT/00001)')
+    picking_id = fields.Many2one('stock.picking', string='Seçilen Transfer', readonly=True)
+    district_id = fields.Many2one('res.city.district', string='İlçe', required=True)
+    available_dates = fields.Text('Uygun Teslimat Günleri', readonly=True)
+    vehicle_info = fields.Text('Araç Bilgileri', readonly=True)
+
+    @api.onchange('picking_name')
+    def _onchange_picking_name(self):
+        if self.picking_name:
+            picking = self.env['stock.picking'].search([
+                ('name', '=', self.picking_name),
+                ('state', 'in', ['confirmed', 'assigned', 'done'])
+            ], limit=1)
+            if picking:
+                self.picking_id = picking.id
+                # İlçe otomatik gelmez, manuel seçim yapılacak
+            else:
+                self.picking_id = False
+                return {
+                    'warning': {
+                        'title': 'Uyarı',
+                        'message': f'"{self.picking_name}" numaralı transfer bulunamadı veya uygun durumda değil.'
+                    }
+                }
+
+    @api.onchange('district_id')
+    def _onchange_district_id(self):
+        if self.district_id:
+            # İlçeye göre uygun teslimat günlerini getir
+            delivery_days = self.env['delivery.day'].search([('active', '=', True)])
+            if delivery_days:
+                days_text = ', '.join([day.name for day in delivery_days])
+                self.available_dates = f"Bu ilçede teslimat yapılabilecek günler: {days_text}"
+            else:
+                self.available_dates = "Bu ilçe için teslimat günü tanımlanmamış."
+        else:
+            self.available_dates = ''
+
+    @api.onchange('vehicle_id', 'date')
+    def _onchange_vehicle_date(self):
+        if self.vehicle_id and self.date:
+            # Aracın o günkü teslimat sayısını kontrol et
+            today_count = self.env['delivery.document'].search_count([
+                ('vehicle_id', '=', self.vehicle_id.id),
+                ('date', '=', self.date),
+                ('state', 'in', ['draft', 'ready'])
+            ])
+            
+            remaining = self.vehicle_id.daily_limit - today_count
+            self.vehicle_info = f"{self.vehicle_id.name} - Bugünkü teslimat: {today_count}/{self.vehicle_id.daily_limit} (Kalan: {remaining})"
+            
+            if today_count >= self.vehicle_id.daily_limit:
+                return {
+                    'warning': {
+                        'title': 'Uyarı',
+                        'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                    }
+                }
+        else:
+            self.vehicle_info = ''
+
+    @api.onchange('date')
+    def _onchange_date(self):
+        if self.date and self.district_id:
+            # Seçilen tarihin uygun bir gün olup olmadığını kontrol et
+            day_of_week = str(self.date.weekday())
+            available_day = self.env['delivery.day'].search([
+                ('day_of_week', '=', day_of_week),
+                ('active', '=', True)
+            ], limit=1)
+            
+            if not available_day:
+                return {
+                    'warning': {
+                        'title': 'Uyarı',
+                        'message': f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")}) bu ilçe için uygun bir teslimat günü değil.'
+                    }
+                }
 
     def action_create_delivery(self):
-        if not self.picking_ids:
-            raise UserError(_('Lütfen en az bir transfer belgesi seçin.'))
+        if not self.picking_id:
+            raise UserError(_('Lütfen geçerli bir transfer numarası girin.'))
+
+        if not self.district_id:
+            raise UserError(_('Lütfen ilçe seçin.'))
+
+        if not self.vehicle_id:
+            raise UserError(_('Lütfen araç seçin.'))
+
+        # Seçilen tarihin uygun bir gün olup olmadığını kontrol et
+        day_of_week = str(self.date.weekday())
+        available_day = self.env['delivery.day'].search([
+            ('day_of_week', '=', day_of_week),
+            ('active', '=', True)
+        ], limit=1)
+        
+        if not available_day:
+            raise UserError(_(f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")}) bu ilçe için uygun bir teslimat günü değil.'))
+
+        # Aracın günlük limitini kontrol et
+        today_count = self.env['delivery.document'].search_count([
+            ('vehicle_id', '=', self.vehicle_id.id),
+            ('date', '=', self.date),
+            ('state', 'in', ['draft', 'ready'])
+        ])
+        
+        if today_count >= self.vehicle_id.daily_limit:
+            # Yetkilendirme kontrolü - sadece teslimat yöneticileri ilave teslimat ekleyebilir
+            if not self.env.user.has_group('delivery_module.group_delivery_manager'):
+                raise UserError(_(f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'))
+            else:
+                # Yetkili kullanıcı için uyarı ver ama devam et
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Limit Aşıldı',
+                    'res_model': 'delivery.limit.warning.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {
+                        'default_vehicle_id': self.vehicle_id.id,
+                        'default_date': self.date,
+                        'default_picking_id': self.picking_id.id,
+                        'default_district_id': self.district_id.id,
+                    }
+                }
+
+        # Transfer zaten bir teslimat belgesine atanmış mı kontrol et
+        existing_delivery = self.env['delivery.document'].search([
+            ('picking_ids', 'in', self.picking_id.id)
+        ], limit=1)
+        
+        if existing_delivery:
+            raise UserError(_(f'Bu transfer zaten "{existing_delivery.name}" teslimat belgesine atanmış.'))
 
         delivery = self.env['delivery.document'].create({
             'date': self.date,
-            'driver_id': self.driver_id.id,
-            'partner_id': self.picking_ids[0].partner_id.id,
-            'picking_ids': [(6, 0, self.picking_ids.ids)],
+            'vehicle_id': self.vehicle_id.id,
+            'partner_id': self.picking_id.partner_id.id,
+            'district_id': self.district_id.id,
+            'picking_ids': [(4, self.picking_id.id)],
         })
 
         return {

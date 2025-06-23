@@ -8,23 +8,24 @@ class DeliveryDocument(models.Model):
 
     name = fields.Char('Teslimat Numarası', required=True, copy=False, readonly=True, default='New')
     date = fields.Date('Teslimat Tarihi', required=True, default=fields.Date.context_today)
-    driver_id = fields.Many2one('res.partner', string='Sürücü', domain=[('is_driver', '=', True)])
+    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True)
     state = fields.Selection([
         ('draft', 'Taslak'),
-        ('approved', 'Onaylandı'),
-        ('in_delivery', 'Teslimatta'),
-        ('done', 'Tamamlandı'),
-        ('cancel', 'İptal Edildi')
+        ('ready', 'Hazır'),
+        ('done', 'Teslim Edildi'),
+        ('cancel', 'İptal')
     ], string='Durum', default='draft', tracking=True)
     
     # Yeni alanlar
     partner_id = fields.Many2one('res.partner', string='Müşteri', required=True)
+    district_id = fields.Many2one('res.city.district', string='İlçe', required=True)
+    delivery_address = fields.Char('Teslimat Adresi', related='partner_id.street', readonly=True)
     picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
-    delivery_count = fields.Integer(compute='_compute_delivery_count', string='Transfer Sayısı')
+    picking_count = fields.Integer(compute='_compute_picking_count', string='Transfer Sayısı')
 
-    def _compute_delivery_count(self):
+    def _compute_picking_count(self):
         for delivery in self:
-            delivery.delivery_count = len(delivery.picking_ids)
+            delivery.picking_count = len(delivery.picking_ids)
 
     def action_view_pickings(self):
         return {
@@ -42,13 +43,28 @@ class DeliveryDocument(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('delivery.document') or 'New'
         return super().create(vals_list)
 
-    def action_approve(self):
-        self.write({'state': 'approved'})
-        self._send_sms_notification('approved')
+    @api.onchange('vehicle_id', 'date')
+    def _onchange_vehicle_date(self):
+        if self.vehicle_id and self.date:
+            # Aracın o günkü teslimat sayısını kontrol et
+            today_count = self.env['delivery.document'].search_count([
+                ('vehicle_id', '=', self.vehicle_id.id),
+                ('date', '=', self.date),
+                ('state', 'in', ['draft', 'ready']),
+                ('id', '!=', self.id)
+            ])
+            
+            if today_count >= self.vehicle_id.daily_limit:
+                return {
+                    'warning': {
+                        'title': 'Uyarı',
+                        'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                    }
+                }
 
-    def action_start(self):
-        self.write({'state': 'in_delivery'})
-        self._send_sms_notification('in_delivery')
+    def action_approve(self):
+        self.write({'state': 'ready'})
+        self._send_sms_notification('ready')
 
     def action_complete(self):
         self.write({'state': 'done'})
@@ -74,8 +90,7 @@ class DeliveryDocument(models.Model):
 
     def _get_sms_message(self, state):
         messages = {
-            'approved': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız onaylandı.',
-            'in_delivery': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız yola çıktı.',
+            'ready': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız hazırlandı.',
             'done': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız tamamlandı.',
             'cancel': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız iptal edildi.'
         }
