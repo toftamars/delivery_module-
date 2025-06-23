@@ -29,7 +29,6 @@
     'data': [
         'security/delivery_security.xml',
         'security/ir.model.access.csv',
-        'security/ir_rule.xml',
         'data/delivery_data.xml',
         'data/ir_sequence_data.xml',
         'views/action_views.xml',
