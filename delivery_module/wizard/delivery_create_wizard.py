@@ -94,12 +94,15 @@ class DeliveryCreateWizard(models.TransientModel):
             ], limit=1)
             
             if not available_day:
-                return {
-                    'warning': {
-                        'title': 'Uyarı',
-                        'message': f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")} - {selected_day_name}) bu ilçe için uygun bir teslimat günü değil.'
-                    }
-                }
+                day_names = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
+                selected_day_name = day_names[self.date.weekday()]
+                
+                # Teslimat yöneticisi için sadece uyarı ver, engelleme
+                if not self.env.user.has_group('delivery_module.group_delivery_manager'):
+                    raise UserError(_(f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")} - {selected_day_name}) bu ilçe için uygun bir teslimat günü değil.'))
+                else:
+                    # Teslimat yöneticisi için uyarı ver ama devam et
+                    print(f"Teslimat yöneticisi uygun olmayan tarihte teslimat oluşturuyor: {self.date.strftime('%d/%m/%Y')} - {selected_day_name}")
 
     def action_create_delivery(self):
         # Transfer numarasını tekrar kontrol et
@@ -121,19 +124,6 @@ class DeliveryCreateWizard(models.TransientModel):
 
         if not self.vehicle_id:
             raise UserError(_('Lütfen araç seçin.'))
-
-        # Seçilen tarihin uygun bir gün olup olmadığını kontrol et
-        day_of_week = str(self.date.weekday())
-        available_day = self.env['delivery.day'].search([
-            ('day_of_week', '=', day_of_week),
-            ('active', '=', True),
-            ('district_ids', 'in', self.district_id.id)
-        ], limit=1)
-        
-        if not available_day:
-            day_names = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
-            selected_day_name = day_names[self.date.weekday()]
-            raise UserError(_(f'Seçilen tarih ({self.date.strftime("%d/%m/%Y")} - {selected_day_name}) bu ilçe için uygun bir teslimat günü değil.'))
 
         # Aracın günlük limitini kontrol et
         today_count = self.env['delivery.document'].search_count([

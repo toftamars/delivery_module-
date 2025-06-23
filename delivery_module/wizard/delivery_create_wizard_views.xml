@@ -7,6 +7,9 @@
             <field name="model">delivery.create.wizard</field>
             <field name="arch" type="xml">
                 <form string="Teslimat Belgesi Oluştur">
+                    <div class="alert alert-info" role="alert" attrs="{'invisible': [('id', '!=', False)]}">
+                        <strong>Teslimat Yöneticisi Notu:</strong> Teslimat yöneticisi olarak uygun olmayan tarihlerde de teslimat oluşturabilirsiniz.
+                    </div>
                     <group>
                         <field name="picking_name" placeholder="Örn: WH/OUT/00001"/>
                         <field name="picking_id" readonly="1"/>
