@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class DeliveryDayClosureWizard(models.TransientModel):
     _name = 'delivery.day.closure.wizard'
     _description = 'Teslimat Günü Geçici Kapatma Sihirbazı'
+    _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     delivery_day_id = fields.Many2one('delivery.day', string='Teslimat Günü', required=True, readonly=True)
     closure_reason = fields.Text('Kapatma Sebebi', required=True, 

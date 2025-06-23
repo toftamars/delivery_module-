@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class DeliveryPhotoWizard(models.TransientModel):
     _name = 'delivery.photo.wizard'
     _description = 'Teslimat Fotoğrafı Ekleme'
+    _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     delivery_id = fields.Many2one('delivery.document', string='Teslimat Belgesi', required=True)
     photo_type = fields.Selection([

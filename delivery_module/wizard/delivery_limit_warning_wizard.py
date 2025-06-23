@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class DeliveryLimitWarningWizard(models.TransientModel):
     _name = 'delivery.limit.warning.wizard'
     _description = 'Teslimat Limiti Uyarı Sihirbazı'
+    _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', readonly=True)
     date = fields.Date('Teslimat Tarihi', readonly=True)

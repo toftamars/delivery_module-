@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class SetupDeliveryScheduleWizard(models.TransientModel):
     _name = 'setup.delivery.schedule.wizard'
     _description = 'Teslimat Programı Kurulum Sihirbazı'
+    _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     def action_setup_schedule(self):
         """Teslimat programını manuel olarak ayarlar"""

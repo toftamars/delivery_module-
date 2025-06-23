@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class DeliveryCreateWizard(models.TransientModel):
     _name = 'delivery.create.wizard'
     _description = 'Teslimat Oluşturma Sihirbazı'
+    _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     date = fields.Date('Teslimat Tarihi', required=True, default=fields.Date.context_today)
     vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True)
