@@ -47,11 +47,6 @@
         'wizard/setup_delivery_schedule_wizard_views.xml',
         'views/menu_views.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'delivery_module/static/src/js/delivery_map.js',
-        ],
-    },
     'demo': [],
     'installable': True,
     'application': True,

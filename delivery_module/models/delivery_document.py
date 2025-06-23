@@ -282,6 +282,23 @@ class DeliveryDocument(models.Model):
     def action_draft(self):
         self.write({'state': 'draft'})
 
+    def action_open_in_maps(self):
+        """Haritada Aç butonu - Google Maps'te teslimat adresini açar"""
+        self.ensure_one()
+        
+        if not self.end_latitude or not self.end_longitude:
+            raise UserError(_('Teslimat adresi için koordinat bilgisi bulunamadı.'))
+        
+        # Google Maps URL oluştur
+        maps_url = f"https://www.google.com/maps?q={self.end_latitude},{self.end_longitude}"
+        
+        # Yeni sekmede aç
+        return {
+            'type': 'ir.actions.act_url',
+            'url': maps_url,
+            'target': 'new',
+        }
+
     def _send_sms_notification(self, state):
         if not self.partner_id.mobile:
             return

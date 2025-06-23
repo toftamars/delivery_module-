@@ -101,10 +101,12 @@
                                     </group>
                                 </group>
                                 <div class="oe_button_box">
+                                    <button name="action_open_in_maps" type="object" string="Haritada Aç" 
+                                            class="btn-primary" icon="fa-map-marker" 
+                                            attrs="{'invisible': [('end_latitude', '=', False), ('end_longitude', '=', False)]}"/>
                                     <button name="refresh_route" type="object" string="Rotayı Yenile" 
-                                            class="btn-primary" icon="fa-refresh"/>
+                                            class="btn-info" icon="fa-refresh"/>
                                 </div>
-                                <field name="name" widget="delivery_map" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>
