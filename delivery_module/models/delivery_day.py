@@ -32,6 +32,10 @@ class DeliveryDay(models.Model):
     district_count = fields.Integer('İlçe Sayısı', compute='_compute_district_count')
     district_list = fields.Text('Teslimat İlçeleri', compute='_compute_district_list', readonly=True)
     
+    # Yaka bazlı ilçe listeleri
+    anatolian_districts = fields.Text('Anadolu Yakası İlçeleri', compute='_compute_anatolian_districts', readonly=True)
+    european_districts = fields.Text('Avrupa Yakası İlçeleri', compute='_compute_european_districts', readonly=True)
+    
     # Durum hesaplama
     status = fields.Selection([
         ('active', 'Aktif'),
@@ -62,6 +66,46 @@ class DeliveryDay(models.Model):
                 day.district_list = ", ".join(district_names)
             else:
                 day.district_list = "Teslimat ilçesi tanımlanmamış"
+
+    def _compute_anatolian_districts(self):
+        """Anadolu Yakası ilçelerini hesaplar"""
+        anatolian_district_names = [
+            'Maltepe', 'Kartal', 'Pendik', 'Tuzla', 'Üsküdar', 'Kadıköy', 
+            'Ataşehir', 'Ümraniye', 'Sancaktepe', 'Çekmeköy', 'Beykoz', 
+            'Şile', 'Sultanbeyli'
+        ]
+        
+        for day in self:
+            anatolian_districts = []
+            for district in day.district_ids.sorted('name'):
+                if district.name in anatolian_district_names:
+                    anatolian_districts.append(f"{district.name} ({district.city_id.name})")
+            
+            if anatolian_districts:
+                day.anatolian_districts = ", ".join(anatolian_districts)
+            else:
+                day.anatolian_districts = "Anadolu Yakası ilçesi tanımlanmamış"
+
+    def _compute_european_districts(self):
+        """Avrupa Yakası ilçelerini hesaplar"""
+        european_district_names = [
+            'Beyoğlu', 'Şişli', 'Beşiktaş', 'Kağıthane', 'Sarıyer', 'Bakırköy',
+            'Bahçelievler', 'Güngören', 'Esenler', 'Bağcılar', 'Eyüpsultan',
+            'Gaziosmanpaşa', 'Küçükçekmece', 'Avcılar', 'Başakşehir', 'Sultangazi',
+            'Arnavutköy', 'Fatih', 'Zeytinburnu', 'Bayrampaşa', 'Esenyurt',
+            'Beylikdüzü', 'Silivri', 'Çatalca'
+        ]
+        
+        for day in self:
+            european_districts = []
+            for district in day.district_ids.sorted('name'):
+                if district.name in european_district_names:
+                    european_districts.append(f"{district.name} ({district.city_id.name})")
+            
+            if european_districts:
+                day.european_districts = ", ".join(european_districts)
+            else:
+                day.european_districts = "Avrupa Yakası ilçesi tanımlanmamış"
 
     def action_temporarily_close(self):
         """Geçici kapatma işlemi"""
