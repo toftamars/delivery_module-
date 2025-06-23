@@ -80,9 +80,45 @@ class DeliveryDocument(models.Model):
         self.write({'state': 'ready'})
         self._send_sms_notification('ready')
 
+    def action_on_the_way(self):
+        """Yolda butonu - Taslaktan Hazır durumuna geçer"""
+        if self.state != 'draft':
+            raise UserError(_('Sadece taslak durumundaki teslimatlar yola çıkabilir.'))
+        
+        self.write({'state': 'ready'})
+        self._send_sms_notification('on_the_way')
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Başarılı'),
+                'message': _('%s numaralı teslimat yola çıktı ve müşteriye SMS gönderildi.') % self.name,
+                'type': 'success',
+            }
+        }
+
     def action_complete(self):
         self.write({'state': 'done'})
         self._send_sms_notification('done')
+
+    def action_finish_delivery(self):
+        """Tamamla butonu - Hazır durumundan Tamamlandı durumuna geçer"""
+        if self.state != 'ready':
+            raise UserError(_('Sadece hazır durumundaki teslimatlar tamamlanabilir.'))
+        
+        self.write({'state': 'done'})
+        self._send_sms_notification('done')
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Başarılı'),
+                'message': _('%s numaralı teslimat tamamlandı ve müşteriye SMS gönderildi.') % self.name,
+                'type': 'success',
+            }
+        }
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
@@ -106,6 +142,7 @@ class DeliveryDocument(models.Model):
         messages = {
             'ready': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız hazırlandı.',
             'done': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız tamamlandı.',
-            'cancel': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız iptal edildi.'
+            'cancel': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız iptal edildi.',
+            'on_the_way': f'Sayın {self.partner_id.name}, {self.name} numaralı teslimatınız yola çıktı.'
         }
         return messages.get(state) 
