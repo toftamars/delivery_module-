@@ -10,5 +10,7 @@ access_delivery_vehicle_user,delivery.vehicle.user,model_delivery_vehicle,base.g
 access_delivery_vehicle_manager,delivery.vehicle.manager,model_delivery_vehicle,group_delivery_manager,1,1,1,1
 access_delivery_limit_warning_wizard_user,delivery.limit.warning.wizard.user,model_delivery_limit_warning_wizard,base.group_user,1,1,1,0
 access_delivery_limit_warning_wizard_manager,delivery.limit.warning.wizard.manager,model_delivery_limit_warning_wizard,group_delivery_manager,1,1,1,1
+access_delivery_day_closure_wizard_user,delivery.day.closure.wizard.user,model_delivery_day_closure_wizard,base.group_user,1,1,1,0
+access_delivery_day_closure_wizard_manager,delivery.day.closure.wizard.manager,model_delivery_day_closure_wizard,group_delivery_manager,1,1,1,1
 access_res_city_district_user,res.city.district.user,model_res_city_district,base.group_user,1,0,0,0
 access_res_city_district_manager,res.city.district.manager,model_res_city_district,group_delivery_manager,1,1,1,1
