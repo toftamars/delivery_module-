@@ -45,14 +45,12 @@ class SetupDeliveryScheduleWizard(models.TransientModel):
         print(f"Teslimat yöneticisi grubu ayarlandı: {delivery_manager_group.name}")
         
         # Kullanıcıya bilgi ver
-        self.env.user.notify_info(
-            title=_('Teslimat Yöneticisi Yetkileri'),
-            message=_('Teslimat yöneticisi grubu oluşturuldu. Kullanıcıları bu gruba atamak için:\n'
-                     '1. Ayarlar > Kullanıcılar ve Şirketler > Kullanıcılar\n'
-                     '2. İlgili kullanıcıyı seçin\n'
-                     '3. Erişim Hakları sekmesinde "Teslimat Yöneticisi" grubunu işaretleyin\n'
-                     '4. Kaydedin')
-        )
+        print(_('Teslimat Yöneticisi Yetkileri'))
+        print(_('Teslimat yöneticisi grubu oluşturuldu. Kullanıcıları bu gruba atamak için:'))
+        print(_('1. Ayarlar > Kullanıcılar ve Şirketler > Kullanıcılar'))
+        print(_('2. İlgili kullanıcıyı seçin'))
+        print(_('3. Erişim Hakları sekmesinde "Teslimat Yöneticisi" grubunu işaretleyin'))
+        print(_('4. Kaydedin'))
 
     def _add_delivery_manager_permissions(self, group):
         """Teslimat yöneticisi grubuna gerekli yetkileri ekler"""
