@@ -67,26 +67,23 @@ class DeliveryDay(models.Model):
                     'Şile', 'Sultanbeyli'
                 ]
                 
-                anatolian_districts = []
-                european_districts = []
+                anatolian_count = 0
+                european_count = 0
                 
-                for district in day.district_ids.sorted('name'):
-                    district_info = f"{district.name} ({district.city_id.name})"
+                for district in day.district_ids:
                     if district.name in anatolian_district_names:
-                        anatolian_districts.append(district_info)
+                        anatolian_count += 1
                     else:
-                        european_districts.append(district_info)
+                        european_count += 1
                 
-                # Yaka bazlı liste oluştur
-                district_list_parts = []
+                # Kısa özet oluştur
+                parts = []
+                if anatolian_count > 0:
+                    parts.append(f"Anadolu: {anatolian_count} ilçe")
+                if european_count > 0:
+                    parts.append(f"Avrupa: {european_count} ilçe")
                 
-                if anatolian_districts:
-                    district_list_parts.append(f"ANADOLU YAKASI: {', '.join(anatolian_districts)}")
-                
-                if european_districts:
-                    district_list_parts.append(f"AVRUPA YAKASI: {', '.join(european_districts)}")
-                
-                day.district_list = " | ".join(district_list_parts)
+                day.district_list = " | ".join(parts)
             else:
                 day.district_list = "Teslimat ilçesi tanımlanmamış"
 
