@@ -40,7 +40,12 @@ class DeliveryCreateWizard(models.TransientModel):
     def _onchange_district_id(self):
         if self.district_id:
             # İlçeye göre uygun teslimat günlerini getir
-            delivery_days = self.district_id.delivery_day_ids.filtered(lambda d: d.active)
+            # Teslimat günlerinde bu ilçenin olup olmadığını kontrol et
+            delivery_days = self.env['delivery.day'].search([
+                ('active', '=', True),
+                ('district_ids', 'in', self.district_id.id)
+            ])
+            
             if delivery_days:
                 days_text = ', '.join([day.name for day in delivery_days.sorted('sequence')])
                 self.available_dates = f"Bu ilçede teslimat yapılabilecek günler: {days_text}"
