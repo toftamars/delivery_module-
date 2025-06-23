@@ -51,8 +51,8 @@
                         
                         <!-- Teslimat İlçeleri Bilgisi -->
                         <group>
-                            <field name="anatolian_districts" string="Anadolu Yakası İlçeleri" widget="text" readonly="1"/>
-                            <field name="european_districts" string="Avrupa Yakası İlçeleri" widget="text" readonly="1"/>
+                            <field name="anatolian_districts" string="Anadolu Yakası İlçeleri" readonly="1"/>
+                            <field name="european_districts" string="Avrupa Yakası İlçeleri" readonly="1"/>
                         </group>
                         
                         <!-- Geçici Kapatma Bilgileri -->
