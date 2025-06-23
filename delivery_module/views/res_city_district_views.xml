@@ -11,6 +11,7 @@
                     <field name="city_id"/>
                     <field name="state_id"/>
                     <field name="delivery_day_count"/>
+                    <field name="delivery_day_list"/>
                     <field name="active"/>
                 </tree>
             </field>
@@ -36,14 +37,20 @@
                                 <button name="action_view_delivery_days" string="Teslimat Günlerini Görüntüle" type="object" class="btn-primary"/>
                             </group>
                         </group>
+                        
+                        <!-- Teslimat Günleri Bilgisi -->
+                        <group>
+                            <field name="delivery_day_list" widget="text" readonly="1"/>
+                        </group>
+                        
                         <notebook>
                             <page string="Teslimat Günleri">
                                 <field name="delivery_day_ids">
                                     <tree>
                                         <field name="name"/>
                                         <field name="day_of_week"/>
+                                        <field name="status"/>
                                         <field name="district_count"/>
-                                        <field name="active"/>
                                     </tree>
                                 </field>
                             </page>

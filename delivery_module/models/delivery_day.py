@@ -27,9 +27,10 @@ class DeliveryDay(models.Model):
     closed_by = fields.Many2one('res.users', string='Kapatan Kullanıcı', readonly=True)
     closed_date = fields.Datetime('Kapatma Tarihi', readonly=True)
     
-    # İlçe ilişkisi
-    district_ids = fields.Many2many('res.city.district', string='Teslimat Yapılan İlçeler')
+    # İlçe ilişkisi (sadece görüntüleme amaçlı)
+    district_ids = fields.Many2many('res.city.district', string='Teslimat Yapılan İlçeler', readonly=True)
     district_count = fields.Integer('İlçe Sayısı', compute='_compute_district_count')
+    district_list = fields.Text('Teslimat İlçeleri', compute='_compute_district_list', readonly=True)
     
     # Durum hesaplama
     status = fields.Selection([
@@ -51,6 +52,16 @@ class DeliveryDay(models.Model):
     def _compute_district_count(self):
         for day in self:
             day.district_count = len(day.district_ids)
+
+    def _compute_district_list(self):
+        for day in self:
+            if day.district_ids:
+                district_names = []
+                for district in day.district_ids.sorted('name'):
+                    district_names.append(f"{district.name} ({district.city_id.name})")
+                day.district_list = ", ".join(district_names)
+            else:
+                day.district_list = "Teslimat ilçesi tanımlanmamış"
 
     def action_temporarily_close(self):
         """Geçici kapatma işlemi"""
