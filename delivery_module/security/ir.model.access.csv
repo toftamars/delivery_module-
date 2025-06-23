@@ -16,6 +16,8 @@ access_delivery_vehicle_closure_wizard_user,delivery.vehicle.closure.wizard.user
 access_delivery_vehicle_closure_wizard_manager,delivery.vehicle.closure.wizard.manager,model_delivery_vehicle_closure_wizard,delivery_module.group_delivery_manager,1,1,1,1
 access_setup_delivery_schedule_wizard_user,setup.delivery.schedule.wizard.user,model_setup_delivery_schedule_wizard,base.group_user,1,1,1,0
 access_setup_delivery_schedule_wizard_manager,setup.delivery.schedule.wizard.manager,model_setup_delivery_schedule_wizard,delivery_module.group_delivery_manager,1,1,1,1
+access_delivery_photo_wizard_user,delivery.photo.wizard.user,model_delivery_photo_wizard,base.group_user,1,1,1,0
+access_delivery_photo_wizard_manager,delivery.photo.wizard.manager,model_delivery_photo_wizard,delivery_module.group_delivery_manager,1,1,1,1
 access_res_city_user,res.city.user,model_res_city,delivery_module.group_delivery_user,1,0,0,0
 access_res_city_manager,res.city.manager,model_res_city,delivery_module.group_delivery_manager,1,1,1,1
 access_res_city_district_user,res.city.district.user,model_res_city_district,delivery_module.group_delivery_user,1,0,0,0

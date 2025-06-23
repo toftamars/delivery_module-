@@ -39,10 +39,8 @@
                                 class="btn-success" attrs="{'invisible': [('state', '!=', 'ready')]}"/>
                         <button name="action_cancel" string="İptal" type="object" 
                                 class="btn-danger" attrs="{'invisible': [('state', 'in', ['cancel', 'done'])]}"/>
-                        <!-- Geçici olarak devre dışı: Fotoğraf wizard'ı sorunlu
                         <button name="%(action_delivery_photo_wizard)d" string="Fotoğraf Ekle" type="action" 
                                 class="btn-info" attrs="{'invisible': [('state', 'not in', ['ready', 'done'])]}"/>
-                        -->
                         <field name="state" widget="statusbar" statusbar_visible="draft,ready,done"/>
                     </header>
                     <sheet>
