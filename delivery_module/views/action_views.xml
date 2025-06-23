@@ -64,5 +64,14 @@
                 </p>
             </field>
         </record>
+
+        <!-- Fotoğraf Ekleme Wizard Action -->
+        <record id="action_delivery_photo_wizard" model="ir.actions.act_window">
+            <field name="name">Fotoğraf Ekle</field>
+            <field name="res_model">delivery.photo.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_delivery_id': active_id}</field>
+        </record>
     </data>
 </odoo> 
