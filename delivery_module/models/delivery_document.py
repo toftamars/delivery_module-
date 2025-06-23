@@ -60,12 +60,21 @@ class DeliveryDocument(models.Model):
             ])
             
             if today_count >= self.vehicle_id.daily_limit:
-                return {
-                    'warning': {
-                        'title': 'Uyarı',
-                        'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                # Teslimat yöneticisi için sadece uyarı ver, engelleme
+                if not self.env.user.has_group('delivery_module.group_delivery_manager'):
+                    return {
+                        'warning': {
+                            'title': 'Uyarı',
+                            'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                        }
                     }
-                }
+                else:
+                    return {
+                        'warning': {
+                            'title': 'Uyarı - Teslimat Yöneticisi',
+                            'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş, ancak teslimat yöneticisi olarak ilave teslimat oluşturabilirsiniz.'
+                        }
+                    }
 
     def action_approve(self):
         self.write({'state': 'ready'})

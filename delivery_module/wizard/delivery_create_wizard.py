@@ -68,12 +68,21 @@ class DeliveryCreateWizard(models.TransientModel):
             self.vehicle_info = f"{self.vehicle_id.name} - Bugünkü teslimat: {today_count}/{self.vehicle_id.daily_limit} (Kalan: {remaining})"
             
             if today_count >= self.vehicle_id.daily_limit:
-                return {
-                    'warning': {
-                        'title': 'Uyarı',
-                        'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                # Teslimat yöneticisi için sadece uyarı ver, engelleme
+                if not self.env.user.has_group('delivery_module.group_delivery_manager'):
+                    return {
+                        'warning': {
+                            'title': 'Uyarı',
+                            'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'
+                        }
                     }
-                }
+                else:
+                    return {
+                        'warning': {
+                            'title': 'Uyarı - Teslimat Yöneticisi',
+                            'message': f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş, ancak teslimat yöneticisi olarak ilave teslimat oluşturabilirsiniz.'
+                        }
+                    }
         else:
             self.vehicle_info = ''
 
@@ -133,24 +142,12 @@ class DeliveryCreateWizard(models.TransientModel):
         ])
         
         if today_count >= self.vehicle_id.daily_limit:
-            # Yetkilendirme kontrolü - sadece teslimat yöneticileri ilave teslimat ekleyebilir
+            # Teslimat yöneticisi için sadece uyarı ver, engelleme
             if not self.env.user.has_group('delivery_module.group_delivery_manager'):
                 raise UserError(_(f'{self.vehicle_id.name} aracının günlük limiti ({self.vehicle_id.daily_limit}) dolmuş. İlave teslimat için yetkilendirme gerekli.'))
             else:
-                # Yetkili kullanıcı için uyarı ver ama devam et
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Limit Aşıldı',
-                    'res_model': 'delivery.limit.warning.wizard',
-                    'view_mode': 'form',
-                    'target': 'new',
-                    'context': {
-                        'default_vehicle_id': self.vehicle_id.id,
-                        'default_date': self.date,
-                        'default_picking_id': picking.id,
-                        'default_district_id': self.district_id.id,
-                    }
-                }
+                # Teslimat yöneticisi için uyarı ver ama devam et
+                print(f"Teslimat yöneticisi limit aşımında teslimat oluşturuyor: {self.vehicle_id.name} - {today_count}/{self.vehicle_id.daily_limit}")
 
         # Transfer zaten bir teslimat belgesine atanmış mı kontrol et
         existing_delivery = self.env['delivery.document'].search([

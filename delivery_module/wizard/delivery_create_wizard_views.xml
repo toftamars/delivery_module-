@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Teslimat Belgesi Oluştur">
                     <div class="alert alert-info" role="alert" attrs="{'invisible': [('id', '!=', False)]}">
-                        <strong>Teslimat Yöneticisi Notu:</strong> Teslimat yöneticisi olarak uygun olmayan tarihlerde de teslimat oluşturabilirsiniz.
+                        <strong>Teslimat Yöneticisi Notu:</strong> Teslimat yöneticisi olarak uygun olmayan tarihlerde ve araç limiti aşıldığında da teslimat oluşturabilirsiniz.
                     </div>
                     <group>
                         <field name="picking_name" placeholder="Örn: WH/OUT/00001"/>
