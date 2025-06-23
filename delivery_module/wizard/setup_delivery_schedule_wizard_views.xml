@@ -10,7 +10,7 @@
                     <div class="alert alert-info" role="alert">
                         <h4 class="alert-heading">Teslimat Programı Kurulumu</h4>
                         <p>Bu işlem aşağıdaki teslimat programını ayarlayacaktır:</p>
-                        <hr>
+                        <hr/>
                         <p><strong>ANADOLU YAKASI:</strong></p>
                         <ul>
                             <li>Pazartesi: Maltepe, Kartal, Pendik, Tuzla</li>
