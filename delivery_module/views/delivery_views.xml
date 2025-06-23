@@ -22,6 +22,8 @@
                             attrs="{'invisible': [('picking_count', '=', 0)]}"/>
                     <button name="action_view_photos" type="object" icon="fa-camera" string="Fotoğraflar" 
                             attrs="{'invisible': [('delivery_photo_count', '=', 0)]}"/>
+                    <button name="action_open_in_maps" type="object" icon="fa-map-marker" string="Haritada Aç" 
+                            attrs="{'invisible': [('delivery_address', '=', False)]}"/>
                 </tree>
             </field>
         </record>
@@ -41,6 +43,9 @@
                                 class="btn-danger" attrs="{'invisible': [('state', 'in', ['cancel', 'done'])]}"/>
                         <button name="%(action_delivery_photo_wizard)d" string="Fotoğraf Ekle" type="action" 
                                 class="btn-info" attrs="{'invisible': [('state', 'not in', ['ready', 'done'])]}"/>
+                        <button name="action_open_in_maps" string="Haritada Aç" type="object" 
+                                class="btn-warning" icon="fa-map-marker" 
+                                attrs="{'invisible': [('delivery_address', '=', False)]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,ready,done"/>
                     </header>
                     <sheet>
@@ -86,27 +91,12 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Harita ve Rota" attrs="{'invisible': [('show_map', '=', False)]}">
+                            <page string="Harita ve Rota">
                                 <group>
-                                    <group>
-                                        <field name="start_latitude"/>
-                                        <field name="start_longitude"/>
-                                        <field name="route_distance"/>
-                                    </group>
-                                    <group>
-                                        <field name="end_latitude"/>
-                                        <field name="end_longitude"/>
-                                        <field name="route_duration"/>
-                                        <field name="show_map"/>
-                                    </group>
-                                </group>
-                                <div class="oe_button_box">
                                     <button name="action_open_in_maps" type="object" string="Haritada Aç" 
                                             class="btn-primary" icon="fa-map-marker" 
-                                            attrs="{'invisible': [('end_latitude', '=', False), ('end_longitude', '=', False)]}"/>
-                                    <button name="refresh_route" type="object" string="Rotayı Yenile" 
-                                            class="btn-info" icon="fa-refresh"/>
-                                </div>
+                                            attrs="{'invisible': [('delivery_address', '=', False)]}"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
