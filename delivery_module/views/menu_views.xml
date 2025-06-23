@@ -10,28 +10,28 @@
         <menuitem id="menu_delivery_document"
                   name="Teslimat Belgeleri"
                   parent="menu_delivery_root"
-                  action="action_delivery_document"
+                  action="delivery_module.action_delivery_document"
                   sequence="10"/>
 
         <!-- Teslimat Oluştur Menüsü -->
         <menuitem id="menu_delivery_create"
                   name="Teslimat Belgesi Oluştur"
                   parent="menu_delivery_root"
-                  action="action_delivery_create_wizard"
+                  action="delivery_module.action_delivery_create_wizard"
                   sequence="20"/>
 
         <!-- Teslimat Araçları Menüsü -->
         <menuitem id="menu_delivery_vehicle"
                   name="Teslimat Araçları"
                   parent="menu_delivery_root"
-                  action="action_delivery_vehicle"
+                  action="delivery_module.action_delivery_vehicle"
                   sequence="30"/>
 
         <!-- Teslimat Günleri Menüsü -->
         <menuitem id="menu_delivery_day"
                   name="Teslimat Günleri"
                   parent="menu_delivery_root"
-                  action="action_delivery_day"
+                  action="delivery_module.action_delivery_day"
                   sequence="40"/>
 
         <!-- Konfigürasyon Menüsü -->
