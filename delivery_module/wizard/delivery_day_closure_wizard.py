@@ -6,7 +6,7 @@ class DeliveryDayClosureWizard(models.TransientModel):
     _description = 'Teslimat Günü Geçici Kapatma Sihirbazı'
     _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
-    delivery_day_id = fields.Many2one('delivery.day', string='Teslimat Günü', required=True, readonly=True)
+    delivery_day_id = fields.Many2one('delivery.day', string='Teslimat Günü', required=True, readonly=True, ondelete='cascade')
     closure_reason = fields.Text('Kapatma Sebebi', required=True, 
                                 placeholder='Örn: Araç bakımı, Resmi tatil, Hava durumu...')
     closure_start_date = fields.Date('Kapatma Başlangıç Tarihi', required=True, default=fields.Date.context_today)

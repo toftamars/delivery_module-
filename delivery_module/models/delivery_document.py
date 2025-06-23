@@ -14,7 +14,7 @@ class DeliveryDocument(models.Model):
 
     name = fields.Char('Teslimat Numarası', required=True, copy=False, readonly=True, default='New')
     date = fields.Date('Teslimat Tarihi', required=True, default=fields.Date.context_today)
-    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True)
+    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True, ondelete='cascade')
     state = fields.Selection([
         ('draft', 'Taslak'),
         ('ready', 'Hazır'),

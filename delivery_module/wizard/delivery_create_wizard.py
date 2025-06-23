@@ -7,7 +7,7 @@ class DeliveryCreateWizard(models.TransientModel):
     _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
     date = fields.Date('Teslimat Tarihi', required=True, default=fields.Date.context_today)
-    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True)
+    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', required=True, ondelete='cascade')
     picking_name = fields.Char('Transfer Numarası', required=True, help='Transfer numarasını girin (örn: WH/OUT/00001)')
     picking_id = fields.Many2one('stock.picking', string='Seçilen Transfer', readonly=True)
     district_id = fields.Many2one('res.city.district', string='İlçe', required=True)

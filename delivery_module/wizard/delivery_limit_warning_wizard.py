@@ -6,7 +6,7 @@ class DeliveryLimitWarningWizard(models.TransientModel):
     _description = 'Teslimat Limiti Uyarı Sihirbazı'
     _transient_max_hours = 24  # 24 saat sonra otomatik temizle
 
-    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', readonly=True)
+    vehicle_id = fields.Many2one('delivery.vehicle', string='Araç', readonly=True, ondelete='cascade')
     date = fields.Date('Teslimat Tarihi', readonly=True)
     picking_id = fields.Many2one('stock.picking', string='Transfer', readonly=True)
     district_id = fields.Many2one('res.city.district', string='İlçe', readonly=True)
