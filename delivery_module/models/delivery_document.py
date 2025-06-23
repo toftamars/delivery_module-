@@ -22,7 +22,7 @@ class DeliveryDocument(models.Model):
     # Yeni alanlar
     partner_id = fields.Many2one('res.partner', string='Müşteri', required=True)
     district_id = fields.Many2one('res.city.district', string='İlçe', required=True)
-    delivery_address = fields.Char('Teslimat Adresi', related='partner_id.street', readonly=True)
+    delivery_address = fields.Char('Teslimat Adresi', compute='_compute_delivery_address', store=True)
     picking_ids = fields.Many2many('stock.picking', string='Transfer Belgeleri')
     picking_count = fields.Integer(compute='_compute_picking_count', string='Transfer Sayısı')
     
@@ -44,6 +44,14 @@ class DeliveryDocument(models.Model):
         """Fotoğraf var mı kontrol eder"""
         for delivery in self:
             delivery.has_photos = len(delivery.delivery_photo_ids) > 0
+
+    def _compute_delivery_address(self):
+        """Teslimat adresini güvenli şekilde hesaplar"""
+        for delivery in self:
+            if delivery.partner_id and delivery.partner_id.street:
+                delivery.delivery_address = delivery.partner_id.street
+            else:
+                delivery.delivery_address = False
 
     def action_view_pickings(self):
         return {
