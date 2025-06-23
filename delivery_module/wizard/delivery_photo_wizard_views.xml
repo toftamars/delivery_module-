@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Geçici olarak devre dışı: Fotoğraf wizard'ı sorunlu -->
+<!--
 <odoo>
     <data>
         <!-- Fotoğraf Ekleme Wizard Form Görünümü -->
@@ -42,4 +44,5 @@
             <field name="context">{'default_delivery_id': active_id}</field>
         </record>
     </data>
-</odoo> 
+</odoo>
+--> 
