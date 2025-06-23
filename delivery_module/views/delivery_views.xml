@@ -59,6 +59,7 @@
                             <group>
                                 <field name="picking_count"/>
                                 <button name="action_view_pickings" type="object" string="Transferleri Görüntüle" attrs="{'invisible': [('picking_count', '=', 0)]}"/>
+                                <field name="delivery_photo_count"/>
                                 <field name="delivery_address"/>
                             </group>
                         </group>
